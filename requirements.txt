@@ -1,0 +1,98 @@
+#  Python 
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+#  Virtual environments 
+.venv/
+venv/
+env/
+ENV/
+
+#  Secrets and config 
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+#  Data (keep folders, ignore contents) 
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.csv
+*.tsv
+*.jsonl
+*.parquet
+
+#  Models and checkpoints 
+models/*
+!models/.gitkeep
+*.joblib
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+*.h5
+checkpoints/
+runs/
+lightning_logs/
+wandb/
+mlruns/
+
+#  Hugging Face / caches 
+.cache/
+huggingface/
+.hf_cache/
+
+#  Jupyter 
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+#  Testing / coverage 
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+#  Frontend (React) 
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env.local
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#  Database 
+*.sqlite3
+*.db
+pgdata/
+
+#  Docker 
+docker-compose.override.yml
+
+#  Logs 
+*.log
+logs/
+
+# IDE / OS 
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
