@@ -1,6 +1,4 @@
 """
-services.py – Service layer that orchestrates claim verification.
-
 Implements a **DEMO MODE** that returns realistic mock responses with varied
 verdicts based on simple keyword heuristics, so the frontend can connect and
 see interesting data without any trained models.
@@ -15,9 +13,6 @@ from typing import List
 
 from backend.schemas import AnalysisResponse, EvidenceItem
 
-# ---------------------------------------------------------------------------
-# Demo evidence banks (grouped by expected verdict)
-# ---------------------------------------------------------------------------
 
 _SUPPORTS_EVIDENCE = [
     EvidenceItem(
@@ -100,9 +95,6 @@ _NEI_EVIDENCE = [
     ),
 ]
 
-# ---------------------------------------------------------------------------
-# Keyword heuristics for demo mode
-# ---------------------------------------------------------------------------
 
 _REFUTE_KEYWORDS = {
     "flat earth", "moon landing fake", "hoax", "conspiracy", "fake",
@@ -119,7 +111,6 @@ _SUPPORT_KEYWORDS = {
 
 
 def _pick_verdict(claim: str) -> str:
-    """Simple keyword-based heuristic to select a demo verdict."""
     lower = claim.lower()
     for kw in _REFUTE_KEYWORDS:
         if kw in lower:
@@ -134,7 +125,6 @@ def _pick_verdict(claim: str) -> str:
 
 
 def _evidence_for(verdict: str) -> List[EvidenceItem]:
-    """Return the evidence bank matching the verdict."""
     if verdict == "SUPPORTS":
         return list(_SUPPORTS_EVIDENCE)
     elif verdict == "REFUTES":
@@ -143,7 +133,6 @@ def _evidence_for(verdict: str) -> List[EvidenceItem]:
 
 
 def _confidence_for(verdict: str, claim: str) -> float:
-    """Generate a plausible confidence score."""
     base = {"SUPPORTS": 0.88, "REFUTES": 0.90, "NOT_ENOUGH_INFO": 0.62}
     # Add a small deterministic jitter so different claims get different scores
     h = int(hashlib.md5(claim.lower().encode()).hexdigest()[:8], 16)
@@ -152,7 +141,6 @@ def _confidence_for(verdict: str, claim: str) -> float:
 
 
 def _explanation_for(verdict: str, claim: str) -> str:
-    """Build a human-readable explanation."""
     templates = {
         "SUPPORTS": (
             f'The claim "{claim}" is consistent with available evidence. '
@@ -173,18 +161,8 @@ def _explanation_for(verdict: str, claim: str) -> str:
     return templates.get(verdict, "Analysis complete.")
 
 
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
-
 
 def analyze_claim(claim: str) -> AnalysisResponse:
-    """
-    Analyse a factual claim and return a structured response.
-
-    Currently runs in **demo mode**: no trained model is required.  Verdicts
-    are chosen via keyword heuristics so the UI shows varied, realistic data.
-    """
     verdict = _pick_verdict(claim)
     confidence = _confidence_for(verdict, claim)
     evidence = _evidence_for(verdict)

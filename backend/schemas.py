@@ -11,13 +11,10 @@ from pydantic import BaseModel, Field
 
 
 class ClaimRequest(BaseModel):
-    """Incoming request body for /analyze."""
-
     claim: str = Field(..., min_length=1, description="The factual claim to verify.")
 
 
 class EvidenceItem(BaseModel):
-    """A single piece of evidence used in the analysis."""
 
     text: str = Field(..., description="The evidence passage text.")
     source: str = Field(default="", description="Source or origin of the evidence.")
@@ -34,7 +31,6 @@ class EvidenceItem(BaseModel):
 
 
 class AnalysisResponse(BaseModel):
-    """Full analysis result returned by /analyze."""
 
     claim: str
     verdict: str = Field(
@@ -50,7 +46,6 @@ class AnalysisResponse(BaseModel):
 
 
 class HistoryItem(BaseModel):
-    """Lightweight record for the /history endpoint."""
 
     claim: str
     verdict: str

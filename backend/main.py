@@ -1,8 +1,4 @@
 """
-main.py – FastAPI application for Fact-Sift.
-
-Endpoints
----------
 GET  /         → health check
 POST /analyze  → verify a factual claim (demo mode)
 GET  /history  → recent analyses (in-memory list)
@@ -18,9 +14,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.schemas import AnalysisResponse, ClaimRequest, HistoryItem
 from backend.services import analyze_claim
 
-# ---------------------------------------------------------------------------
-# App & CORS
-# ---------------------------------------------------------------------------
 
 app = FastAPI(
     title="Fact-Sift API",
@@ -36,27 +29,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ---------------------------------------------------------------------------
-# In-memory history store
-# ---------------------------------------------------------------------------
 
 _history: List[HistoryItem] = []
 _MAX_HISTORY = 100
 
-# ---------------------------------------------------------------------------
-# Routes
-# ---------------------------------------------------------------------------
-
 
 @app.get("/")
 def health_check():
-    """Simple health / readiness probe."""
     return {"status": "ok", "service": "fact-sift", "version": "0.1.0"}
 
 
 @app.post("/analyze", response_model=AnalysisResponse)
 def analyze(request: ClaimRequest):
-    """Verify a factual claim and return an analysis report."""
     result = analyze_claim(request.claim)
 
     # Persist to in-memory history
@@ -77,5 +61,4 @@ def analyze(request: ClaimRequest):
 
 @app.get("/history", response_model=List[HistoryItem])
 def history():
-    """Return recent analyses (most recent first)."""
     return list(reversed(_history))
